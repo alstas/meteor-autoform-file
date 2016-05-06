@@ -42,6 +42,15 @@ Template.afFileUpload.onCreated ->
       if err then return console.log err
       self.value.set fileObj._id
 
+  @_remove = () ->
+    collection = getCollection self.data
+
+    id = self.value.get()
+    self.value.set false
+
+    if typeof id is 'string'
+      collection.remove id
+
   @autorun ->
     _id = self.value.get()
     _id and Meteor.subscribe 'autoformFileDoc', self.data.atts.collection, _id
@@ -95,7 +104,7 @@ Template.afFileUpload.events
 
   'click .js-af-remove-file': (e, t) ->
     e.preventDefault()
-    t.value.set false
+    t._remove()
 
   'fileuploadchange .js-file': (e, t, data) ->
     t._insert new FS.File data.files[0]
