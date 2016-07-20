@@ -37,7 +37,7 @@ Template.afFileUpload.onCreated ->
       if typeof self.data.atts?.onAfterInsert is 'function'
         self.data.atts.onAfterInsert err, fileObj
 
-      fileObj.update $set: metadata: owner: Meteor.userId()
+      Meteor.userId and fileObj.update $set: metadata: owner: Meteor.userId()
 
       if err then return console.log err
       self.value.set fileObj._id
